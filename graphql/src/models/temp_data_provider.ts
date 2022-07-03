@@ -41,34 +41,26 @@ export let bands = [
         name: "DeadCrows",
         origin: "NewYork",
         members: ["adhkajsdh8282", "12321hgjsdga7"],
-        website: "https://deadc.com"
-        // genres: [Genre]
+        website: "https://deadc.com",
+        genres: ["23213k2k3j231", "sdsdf323323231"]
     },
     {
         id: "oidsfyssdfdsfy32234",
         name: "DeadPony",
         origin: "NewArc",
         members: ["1321j3hj12g3jh", "12321hgjsdga7"],
-        website: "https://dead2c.com"
-        // genres: [Genre]
+        website: "https://dead2c.com",
+        genres: ["23213k2k3j231", "12313124231"]
     },
     {
         id: "dsfsdfsdf22123",
         name: "DeadStatic",
         origin: "Minsk",
         members: ["1321j3hj12g3jh", "adhkajsdh8282"],
-        website: "https://deadcm232.com"
-        // genres: [Genre]
+        website: "https://deadcm232.com",
+        genres: ["23213k2k3j231", "23213dsfsdfsd"]
     }
 ];
-
-// type Genre {
-//     id: ID!
-//     name: String
-//     description: String
-//     country: String
-//     year: Int
-// }
 
 export let genres = [
     {

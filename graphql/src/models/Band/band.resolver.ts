@@ -2,11 +2,12 @@ import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nest
 import { Band } from './model/band.model.js';
 import * as crypto from 'crypto';
 import { Artist } from '../Artist/model/artist.model.js';
-import { artists as ImpArtist, bands as ImpBands } from '../temp_data_provider.js';
+import { artists as ImpArtist, bands as ImpBands, genres as ImpGenres } from '../temp_data_provider.js';
+import { Genre } from '../Genre/model/genre.model.js';
 
 let bands = ImpBands;
 let artists = ImpArtist;
-
+let genres = ImpGenres;
 
 @Resolver(of => Band)
 export class BandResolver {
@@ -22,7 +23,6 @@ export class BandResolver {
 
     @ResolveField('members', returns => [Artist])
     async members(@Parent() band: Band) {
-
         return band.members.map(memberId => {
             let artistObj;
             artists.forEach(artist => {
@@ -35,16 +35,30 @@ export class BandResolver {
         });
     }
 
+    @ResolveField('genres', returns => [Genre])
+    async genres(@Parent() band: Band) {
+        return band.genres.map(genreId => {
+            let genreObj;
+            genres.forEach(genre => {
+                if (genre.id === genreId) {
+                    genreObj = genre;
+                }
+            });
+
+            return genreObj;
+        });
+    }
+
     @Mutation(returns => Band)
     async createBand(
         @Args({name: 'name', type: () => String, nullable: true}) name: string,
         @Args({name: 'origin', type: () => String, nullable: true}) origin: string,
         @Args({name: 'members', type: () => [String], nullable: true}) members: string[],
         @Args({name: 'website', type: () => String, nullable: true}) website: string,
-        // @Args({name: 'genres', type: () => [Genre], nullable: true}) genres: Genre[],
+        @Args({name: 'genres', type: () => [String], nullable: true}) genres: string[],
     ) {
         const id = crypto.randomBytes(15).toString('hex');
-        const band = {id: id, name, origin, members: members, website};
+        const band = {id: id, name, origin, members, website, genres};
         bands.push(band);
         return band;
     }
@@ -72,7 +86,7 @@ export class BandResolver {
         @Args({name: 'origin', type: () => String, nullable: true}) origin: string,
         @Args({name: 'members', type: () => [String], nullable: true}) members: string[],
         @Args({name: 'website', type: () => String, nullable: true}) website: string,
-        // @Args({name: 'genres', type: () => [Genre], nullable: true}) genres: Genre[],
+        @Args({name: 'genres', type: () => [String], nullable: true}) genres: string[],
     ) {
         let updatedBand;
         bands.forEach((band) => {
@@ -81,6 +95,7 @@ export class BandResolver {
                 band.origin = origin;
                 band.members = members;
                 band.website = website;
+                band.genres = genres;
 
                 updatedBand = band;
             }

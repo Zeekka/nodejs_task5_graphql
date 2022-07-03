@@ -2,12 +2,21 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Genre {
+  id: ID!
+  name: String
+  description: String
+  country: String
+  year: Int
+}
+
 type Band {
   id: ID!
   name: String
   origin: String
   members: [Artist!]
   website: String
+  genres: [Genre!]
 }
 
 type Artist {
@@ -19,14 +28,6 @@ type Artist {
   country: String
   bands: [Band!]
   instruments: [String!]
-}
-
-type Genre {
-  id: ID!
-  name: String
-  description: String
-  country: String
-  year: Int
 }
 
 type Query {
@@ -42,9 +43,9 @@ type Mutation {
   createArtist(firstName: String, secondName: String, middleName: String, birthDate: String, birthPlace: String, country: String, bands: [String!], instruments: [String!]): Artist!
   deleteArtist(id: String!): Artist!
   updateArtist(id: ID!, firstName: String, secondName: String, middleName: String, birthDate: String, birthPlace: String, country: String, bands: [String!], instruments: [String!]): Artist!
-  createBand(name: String, origin: String, members: [String!], website: String): Band!
+  createBand(name: String, origin: String, members: [String!], website: String, genres: [String!]): Band!
   deleteBand(id: String!): Band!
-  updateBand(id: ID!, name: String, origin: String, members: [String!], website: String): Band!
+  updateBand(id: ID!, name: String, origin: String, members: [String!], website: String, genres: [String!]): Band!
   createGenre(name: String, description: String, country: String, year: Int): Genre!
   deleteGenre(id: String!): Genre!
   updateGenre(id: ID!, name: String, description: String, country: String, year: Int): Genre!
