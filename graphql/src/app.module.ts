@@ -6,6 +6,7 @@ import { ArtistModule } from './models/Artist/artist.module.js';
 import { BandModule } from './models/Band/band.module.js';
 import { GenreModule } from './models/Genre/genre.module.js';
 import { AlbumModule } from './models/Album/album.module.js';
+import { TrackModule } from './models/Track/track.module.js';
 
 @Module({
     imports: [
@@ -17,7 +18,8 @@ import { AlbumModule } from './models/Album/album.module.js';
         ArtistModule,
         BandModule,
         GenreModule,
-        AlbumModule
+        AlbumModule,
+        TrackModule
     ]
 })
 export class AppModule {

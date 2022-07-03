@@ -40,6 +40,16 @@ type Album {
   image: String
 }
 
+type Track {
+  id: ID!
+  title: String
+  albums: [Album!]!
+  bands: [Band!]
+  duration: Int
+  released: Int
+  genres: [Genre!]
+}
+
 type Query {
   artist(id: String!): Artist!
   artists: [Artist!]!
@@ -49,6 +59,8 @@ type Query {
   genres: [Genre!]!
   album(id: String!): Album!
   albums: [Album!]!
+  track(id: String!): Track!
+  tracks: [Track!]!
 }
 
 type Mutation {
@@ -64,4 +76,7 @@ type Mutation {
   createAlbum(name: String, released: Int, artists: [String!], bands: [String!], genres: [String!], image: String): Album!
   deleteAlbum(id: String!): Album!
   updateAlbum(id: ID!, name: String, released: Int, artists: [String!], bands: [String!], genres: [String!], image: String): Album!
+  createTrack(title: String, albums: [String!], bands: [String!], duration: Int, released: Int, genres: [String!]): Track!
+  deleteTrack(id: String!): Track!
+  updateTrack(id: ID!, title: String, albums: [String!], bands: [String!], duration: Int, released: Int, genres: [String!]): Track!
 }

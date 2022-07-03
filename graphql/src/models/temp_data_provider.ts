@@ -125,3 +125,42 @@ export let albums = [
         image: "dead.pop.big.com"
     }
 ];
+
+export let tracks = [
+    {
+        id: "12345",
+        title: "The Only",
+        albums: ["12345"],
+        bands: ["oidsfysodify32234"],
+        duration: 189,
+        released: 2010,
+        genres: ["23213k2k3j231", "23213dsfsdfsd"],
+    },
+    {
+        id: "5678890",
+        title: "Malo",
+        albums: ["56789"],
+        bands: ["oidsfyssdfdsfy32234"],
+        duration: 178,
+        released: 2002,
+        genres: ["sdsdf323323231", "23213dsfsdfsd"],
+    },
+    {
+        id: "135790",
+        title: "Greey",
+        albums: ["12345"],
+        bands: ["dsfsdfsdf22123"],
+        duration: 160,
+        released: 2011,
+        genres: ["sdsdf323323231", "12313124231"],
+    },
+    {
+        id: "24680",
+        title: "Korn",
+        albums: ["10293"],
+        bands: ["oidsfysodify32234"],
+        duration: 184,
+        released: 2012,
+        genres: ["23213k2k3j231", "12313124231"],
+    },
+];
