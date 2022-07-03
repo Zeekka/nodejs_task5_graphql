@@ -30,6 +30,16 @@ type Artist {
   instruments: [String!]
 }
 
+type Album {
+  id: ID!
+  name: String
+  released: Int
+  artists: [Artist!]
+  bands: [Band!]
+  genres: [Genre!]
+  image: String
+}
+
 type Query {
   artist(id: String!): Artist!
   artists: [Artist!]!
@@ -37,6 +47,8 @@ type Query {
   bands: [Band!]!
   genre(id: String!): Genre!
   genres: [Genre!]!
+  album(id: String!): Album!
+  albums: [Album!]!
 }
 
 type Mutation {
@@ -49,4 +61,7 @@ type Mutation {
   createGenre(name: String, description: String, country: String, year: Int): Genre!
   deleteGenre(id: String!): Genre!
   updateGenre(id: ID!, name: String, description: String, country: String, year: Int): Genre!
+  createAlbum(name: String, released: Int, artists: [String!], bands: [String!], genres: [String!], image: String): Album!
+  deleteAlbum(id: String!): Album!
+  updateAlbum(id: ID!, name: String, released: Int, artists: [String!], bands: [String!], genres: [String!], image: String): Album!
 }

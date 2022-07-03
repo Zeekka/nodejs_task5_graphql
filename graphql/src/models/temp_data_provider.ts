@@ -92,3 +92,36 @@ export let genres = [
         year: 1993
     }
 ];
+
+export let albums = [
+    {
+        id: "12345",
+        name: "Boom boom",
+        released: 1999,
+        artists: ["1321j3hj12g3jh", "12321hgjsdga7"],
+        bands: ["oidsfysodify32234"],
+        //tracks = [],
+        genres: ["23213k2k3j231", "23213dsfsdfsd"],
+        image: "image.boom.com"
+    },
+    {
+        id: "56789",
+        name: "Dead boom",
+        released: 2002,
+        artists: ["1321j3hj12g3jh", "adhkajsdh8282"],
+        bands: ["dsfsdfsdf22123"],
+        //tracks = [],
+        genres: ["23213k2k3j231", "12313124231"],
+        image: "dead.boomboob.com"
+    },
+    {
+        id: "10293",
+        name: "Big dead",
+        released: 2003,
+        artists: ["12321hgjsdga7", "adhkajsdh8282"],
+        bands: ["oidsfyssdfdsfy32234"],
+        //tracks = [],
+        genres: ["sdsdf323323231", "12313124231"],
+        image: "dead.pop.big.com"
+    }
+];
