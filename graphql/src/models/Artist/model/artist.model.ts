@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Band } from '../../Band/model/band.model.js';
 
 @ObjectType()
 export class Artist {
@@ -20,8 +21,8 @@ export class Artist {
     @Field({nullable: true})
     country?: string;
 
-    // @Field({ nullable: true })
-    // bands?: [string];
+    @Field(type => [Band], { nullable: true })
+    bands?: string[];
 
     @Field(type => [String], {nullable: true})
     instruments?: string[];

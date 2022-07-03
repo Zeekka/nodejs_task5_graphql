@@ -13,7 +13,7 @@ export class Band {
     origin?: string;
 
     @Field(type => [Artist], {nullable: true})
-    members?: Artist[];
+    members?: string[];
 
     @Field({nullable: true})
     website?: string;

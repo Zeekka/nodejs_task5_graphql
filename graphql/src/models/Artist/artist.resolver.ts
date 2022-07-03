@@ -1,7 +1,8 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Artist } from './model/artist.model.js';
 import * as crypto from 'crypto';
 import {bands as ImpBands, artists as ImpArtist} from '../temp_data_provider.js';
+import { Band } from '../Band/model/band.model.js';
 
 let bands = ImpBands;
 let artists = ImpArtist;
@@ -18,6 +19,20 @@ export class ArtistResolver {
         return artists;
     }
 
+    @ResolveField('bands', type => [Band])
+    async bands(@Parent() artist: Artist) {
+        return artist.bands.map(bandId => {
+            let bandObj;
+            bands.forEach(band => {
+                if (band.id === bandId) {
+                    bandObj = band;
+                }
+            });
+
+            return bandObj;
+        });
+    }
+
     @Mutation(returns => Artist)
     async createArtist(
         @Args({name: 'firstName', type: () => String, nullable: true}) firstName: string,
@@ -26,11 +41,11 @@ export class ArtistResolver {
         @Args({name: 'birthDate', type: () => String, nullable: true}) birthDate: string,
         @Args({name: 'birthPlace', type: () => String, nullable: true}) birthPlace: string,
         @Args({name: 'country', type: () => String, nullable: true}) country: string,
-        // @Args({name: 'bands', type: () => [String], nullable: true}) bands: string[],
+        @Args({name: 'bands', type: () => [String], nullable: true}) bands: string[],
         @Args({name: 'instruments', type: () => [String], nullable: true}) instruments: string[],
     ) {
         const id = crypto.randomBytes(15).toString('hex');
-        const artist = {id: id, firstName, secondName, middleName, birthDate, birthPlace, country, instruments};
+        const artist = {id: id, firstName, secondName, middleName, birthDate, birthPlace, country, bands, instruments};
         artists.push(artist);
         return artist
     }
@@ -60,7 +75,7 @@ export class ArtistResolver {
         @Args({name: 'birthDate', type: () => String, nullable: true}) birthDate: string,
         @Args({name: 'birthPlace', type: () => String, nullable: true}) birthPlace: string,
         @Args({name: 'country', type: () => String, nullable: true}) country: string,
-        // @Args({name: 'bands', type: () => [String], nullable: true}) bands: string[],
+        @Args({name: 'bands', type: () => [String], nullable: true}) bands: string[],
         @Args({name: 'instruments', type: () => [String], nullable: true}) instruments: string[],
     ) {
         let updatedArtist;
@@ -71,6 +86,7 @@ export class ArtistResolver {
                 artist.middleName = middleName;
                 artist.birthDate = birthDate;
                 artist.country = country;
+                artist.bands = bands;
                 artist.instruments = instruments;
 
                 updatedArtist = artist;

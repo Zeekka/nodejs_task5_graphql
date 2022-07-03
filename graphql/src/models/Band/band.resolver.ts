@@ -2,7 +2,7 @@ import { Args, ID, Mutation, Parent, Query, ResolveField, Resolver } from '@nest
 import { Band } from './model/band.model.js';
 import * as crypto from 'crypto';
 import { Artist } from '../Artist/model/artist.model.js';
-import {bands as ImpBands, artists as ImpArtist} from '../temp_data_provider.js';
+import { artists as ImpArtist, bands as ImpBands } from '../temp_data_provider.js';
 
 let bands = ImpBands;
 let artists = ImpArtist;
@@ -22,7 +22,17 @@ export class BandResolver {
 
     @ResolveField('members', returns => [Artist])
     async members(@Parent() band: Band) {
-        return band.members;
+
+        return band.members.map(memberId => {
+            let artistObj;
+            artists.forEach(artist => {
+                if (artist.id === memberId) {
+                    artistObj = artist;
+                }
+            });
+
+            return artistObj;
+        });
     }
 
     @Mutation(returns => Band)
@@ -34,10 +44,7 @@ export class BandResolver {
         // @Args({name: 'genres', type: () => [Genre], nullable: true}) genres: Genre[],
     ) {
         const id = crypto.randomBytes(15).toString('hex');
-        const membersArray: Artist[] = members.map(memberId => {
-            return artists.filter(artist => artist.id === memberId).pop();
-        });
-        const band = {id: id, name, origin, members: membersArray, website};
+        const band = {id: id, name, origin, members: members, website};
         bands.push(band);
         return band;
     }
@@ -72,9 +79,7 @@ export class BandResolver {
             if (band.id === id) {
                 band.name = name;
                 band.origin = origin;
-                band.members = members.map(memberId => {
-                    return artists.filter(artist => artist.id === memberId).pop();
-                });
+                band.members = members;
                 band.website = website;
 
                 updatedBand = band;

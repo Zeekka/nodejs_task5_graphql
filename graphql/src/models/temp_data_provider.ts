@@ -1,5 +1,3 @@
-import { Artist } from './Artist/model/artist.model.js';
-
 export let artists = [
     {
         id: '1321j3hj12g3jh',
@@ -9,7 +7,7 @@ export let artists = [
         birthDate: '16.11.1999',
         birthPlace: 'Place',
         country: 'USA',
-        // bands: [Band],
+        bands: ["oidsfysodify32234"],
         instruments: ['guitar', 'piano']
     },
     {
@@ -20,7 +18,7 @@ export let artists = [
         birthDate: '16.11.1988',
         birthPlace: 'Place2',
         country: 'USSR',
-        // bands: [Band],
+        bands: ["oidsfyssdfdsfy32234"],
         instruments: ['guitar', 'drums']
     },
     {
@@ -31,17 +29,18 @@ export let artists = [
         birthDate: '16.11.1977',
         birthPlace: 'Place3',
         country: 'UK',
-        // bands: [Band],
+        bands: ["dsfsdfsdf22123"],
         instruments: ['guitar']
-    },
-];
+    }
+]
+
 
 export let bands = [
     {
         id: "oidsfysodify32234",
         name: "DeadCrows",
         origin: "NewYork",
-        members: [artists[0] as Artist, artists[1] as Artist],
+        members: ["adhkajsdh8282", "12321hgjsdga7"],
         website: "https://deadc.com"
         // genres: [Genre]
     },
@@ -49,7 +48,7 @@ export let bands = [
         id: "oidsfyssdfdsfy32234",
         name: "DeadPony",
         origin: "NewArc",
-        members: [artists[2] as Artist, artists[1] as Artist],
+        members: ["1321j3hj12g3jh", "12321hgjsdga7"],
         website: "https://dead2c.com"
         // genres: [Genre]
     },
@@ -57,7 +56,7 @@ export let bands = [
         id: "dsfsdfsdf22123",
         name: "DeadStatic",
         origin: "Minsk",
-        members: [artists[0] as Artist, artists[2] as Artist],
+        members: ["1321j3hj12g3jh", "adhkajsdh8282"],
         website: "https://deadcm232.com"
         // genres: [Genre]
     }
