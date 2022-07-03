@@ -12,13 +12,26 @@ type Artist {
   instruments: [String!]
 }
 
+type Band {
+  id: ID!
+  name: String
+  origin: String
+  members: [Artist!]
+  website: String
+}
+
 type Query {
   artist(id: String!): Artist!
   artists: [Artist!]!
+  band(id: String!): Band!
+  bands: [Band!]!
 }
 
 type Mutation {
   createArtist(firstName: String, secondName: String, middleName: String, birthDate: String, birthPlace: String, country: String, instruments: [String!]): Artist!
   deleteArtist(id: String!): Artist!
   updateArtist(id: ID!, firstName: String, secondName: String, middleName: String, birthDate: String, birthPlace: String, country: String, instruments: [String!]): Artist!
+  createBand(name: String, origin: String, members: [String!], website: String): Band!
+  deleteBand(id: String!): Band!
+  updateBand(id: ID!, name: String, origin: String, members: [String!], website: String): Band!
 }

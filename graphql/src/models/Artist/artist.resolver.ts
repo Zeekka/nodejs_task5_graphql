@@ -1,42 +1,7 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Artist } from './model/artist.model.js';
 import * as crypto from 'crypto';
-
-let artists = [
-    {
-        id: '1321j3hj12g3jh',
-        firstName: 'name1',
-        secondName: 'sname1',
-        middleName: 'mname1',
-        birthDate: '16.11.1999',
-        birthPlace: 'Place',
-        country: 'USA',
-        // bands: [Band],
-        instruments: ['guitar', 'piano']
-    },
-    {
-        id: '12321hgjsdga7',
-        firstName: 'name2',
-        secondName: 'sname2',
-        middleName: 'mname3',
-        birthDate: '16.11.1988',
-        birthPlace: 'Place2',
-        country: 'USSR',
-        // bands: [Band],
-        instruments: ['guitar', 'drums']
-    },
-    {
-        id: 'adhkajsdh8282',
-        firstName: 'name3',
-        secondName: 'sname3',
-        middleName: 'mname3',
-        birthDate: '16.11.1977',
-        birthPlace: 'Place3',
-        country: 'UK',
-        // bands: [Band],
-        instruments: ['guitar']
-    },
-];
+import {artists, bands} from '../temp_data_provider.js';
 
 @Resolver(of => Artist)
 export class ArtistResolver {
