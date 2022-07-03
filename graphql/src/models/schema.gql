@@ -21,11 +21,21 @@ type Artist {
   instruments: [String!]
 }
 
+type Genre {
+  id: ID!
+  name: String
+  description: String
+  country: String
+  year: Int
+}
+
 type Query {
   artist(id: String!): Artist!
   artists: [Artist!]!
   band(id: String!): Band!
   bands: [Band!]!
+  genre(id: String!): Genre!
+  genres: [Genre!]!
 }
 
 type Mutation {
@@ -35,4 +45,7 @@ type Mutation {
   createBand(name: String, origin: String, members: [String!], website: String): Band!
   deleteBand(id: String!): Band!
   updateBand(id: ID!, name: String, origin: String, members: [String!], website: String): Band!
+  createGenre(name: String, description: String, country: String, year: Int): Genre!
+  deleteGenre(id: String!): Genre!
+  updateGenre(id: ID!, name: String, description: String, country: String, year: Int): Genre!
 }

@@ -61,3 +61,42 @@ export let bands = [
         // genres: [Genre]
     }
 ];
+
+// type Genre {
+//     id: ID!
+//     name: String
+//     description: String
+//     country: String
+//     year: Int
+// }
+
+export let genres = [
+    {
+        id: "23213k2k3j231",
+        name: "Rock",
+        description: "Rock description",
+        country: "USA",
+        year: 1990
+    },
+    {
+        id: "23213dsfsdfsd",
+        name: "Pop",
+        description: "Pop description",
+        country: "Korea",
+        year: 1991
+    },
+    {
+        id: "12313124231",
+        name: "Jazz",
+        description: "Jazz description",
+        country: "France",
+        year: 1992
+    },
+    {
+        id: "sdsdf323323231",
+        name: "Punk",
+        description: "Punk description",
+        country: "UK",
+        year: 1993
+    }
+];

@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ArtistModule } from './models/Artist/artist.module.js';
 import { BandModule } from './models/Band/band.module.js';
+import { GenreModule } from './models/Genre/genre.module.js';
 
 @Module({
     imports: [
@@ -13,7 +14,8 @@ import { BandModule } from './models/Band/band.module.js';
             playground: process.env.APP_ENV === 'dev'
         } as ApolloDriverConfig),
         ArtistModule,
-        BandModule
+        BandModule,
+        GenreModule
     ]
 })
 export class AppModule {
