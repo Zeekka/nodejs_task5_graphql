@@ -1,7 +1,10 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Artist } from './model/artist.model.js';
 import * as crypto from 'crypto';
-import {artists, bands} from '../temp_data_provider.js';
+import {bands as ImpBands, artists as ImpArtist} from '../temp_data_provider.js';
+
+let bands = ImpBands;
+let artists = ImpArtist;
 
 @Resolver(of => Artist)
 export class ArtistResolver {
