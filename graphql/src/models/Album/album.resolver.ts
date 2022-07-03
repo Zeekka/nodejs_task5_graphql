@@ -4,17 +4,20 @@ import {
     genres as ImpGenres,
     albums as ImpAlbums,
     artists as ImpArtists,
-    bands as ImpBands
+    bands as ImpBands,
+    tracks as ImpTracks,
 } from '../temp_data_provider.js';
 import { Album } from './model/album.model.js';
 import { Artist } from '../Artist/model/artist.model.js';
 import { Band } from '../Band/model/band.model.js';
 import { Genre } from '../Genre/model/genre.model.js';
+import { Track } from '../Track/model/track.model.js';
 
 let genres = ImpGenres;
 let albums = ImpAlbums;
 let artists = ImpArtists;
 let bands = ImpBands;
+let tracks = ImpTracks;
 
 @Resolver(of => Album)
 export class AlbumResolver {
@@ -70,6 +73,20 @@ export class AlbumResolver {
         });
     }
 
+    @ResolveField('tracks', type => [Track])
+    async tracks(@Parent() album: Album) {
+        return album.tracks.map(trackId => {
+            let trackObj;
+            tracks.forEach(track => {
+                if (track.id === trackId) {
+                    trackObj = track;
+                }
+            });
+
+            return trackObj;
+        });
+    }
+
     @Mutation(returns => Album)
     async createAlbum(
         @Args({name: 'name', type: () => String, nullable: true}) name: string,
@@ -77,11 +94,11 @@ export class AlbumResolver {
         @Args({name: 'artists', type: () => [String], nullable: true}) artists: string[],
         @Args({name: 'bands', type: () => [String], nullable: true}) bands: string[],
         @Args({name: 'genres', type: () => [String], nullable: true}) genres: string[],
-        // @Args({name: 'tracks', type: () => [String], nullable: true}) tracks: string[],
+        @Args({name: 'tracks', type: () => [String], nullable: true}) tracks: string[],
         @Args({name: 'image', type: () => String, nullable: true}) image: string,
     ) {
         const id = crypto.randomBytes(15).toString('hex');
-        const album = {id: id, name, released, artists, bands, genres, image};
+        const album = {id: id, name, released, artists, bands, genres, tracks, image};
         albums.push(album);
         return album;
     }
@@ -110,7 +127,7 @@ export class AlbumResolver {
         @Args({name: 'artists', type: () => [String], nullable: true}) artists: string[],
         @Args({name: 'bands', type: () => [String], nullable: true}) bands: string[],
         @Args({name: 'genres', type: () => [String], nullable: true}) genres: string[],
-        // @Args({name: 'tracks', type: () => [String], nullable: true}) tracks: string[],
+        @Args({name: 'tracks', type: () => [String], nullable: true}) tracks: string[],
         @Args({name: 'image', type: () => String, nullable: true}) image: string,
     ) {
         let updatedAlbum;
@@ -121,6 +138,7 @@ export class AlbumResolver {
                 album.artists = artists;
                 album.bands = bands;
                 album.genres = genres;
+                album.tracks = tracks;
                 album.image = image;
 
                 updatedAlbum = album;

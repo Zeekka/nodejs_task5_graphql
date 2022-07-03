@@ -100,7 +100,7 @@ export let albums = [
         released: 1999,
         artists: ["1321j3hj12g3jh", "12321hgjsdga7"],
         bands: ["oidsfysodify32234"],
-        //tracks = [],
+        tracks: ["12345", "5678890"],
         genres: ["23213k2k3j231", "23213dsfsdfsd"],
         image: "image.boom.com"
     },
@@ -110,7 +110,7 @@ export let albums = [
         released: 2002,
         artists: ["1321j3hj12g3jh", "adhkajsdh8282"],
         bands: ["dsfsdfsdf22123"],
-        //tracks = [],
+        tracks: ["12345", "135790"],
         genres: ["23213k2k3j231", "12313124231"],
         image: "dead.boomboob.com"
     },
@@ -120,7 +120,7 @@ export let albums = [
         released: 2003,
         artists: ["12321hgjsdga7", "adhkajsdh8282"],
         bands: ["oidsfyssdfdsfy32234"],
-        //tracks = [],
+        tracks: ["5678890", "24680"],
         genres: ["sdsdf323323231", "12313124231"],
         image: "dead.pop.big.com"
     }
