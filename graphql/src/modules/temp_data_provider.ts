@@ -195,3 +195,31 @@ export let users = [
         email: "Nina.email.com"
     }
 ];
+
+// type Favourites {
+//     id: ID!
+//     userId: ID
+//     bands: [Band]
+//     genres: [Genre]
+//     artists: [Artist]
+//     tracks: [Track]
+// }
+
+export let favourites = [
+    {
+        id: "12345",
+        userId: "12345",
+        bands: ["oidsfysodify32234", "oidsfyssdfdsfy32234"],
+        genres: ["23213k2k3j231", "23213dsfsdfsd"],
+        artists: ["1321j3hj12g3jh", "12321hgjsdga7"],
+        tracks: ["12345"]
+    },
+    {
+        id: "24680",
+        userId: "13579",
+        bands: ["oidsfyssdfdsfy32234"],
+        genres: ["23213dsfsdfsd"],
+        artists: ["1321j3hj12g3jh", "12321hgjsdga7"],
+        tracks: ["12345"]
+    }
+];

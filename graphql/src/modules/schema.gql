@@ -59,6 +59,15 @@ type User {
   email: String!
 }
 
+type Favourite {
+  id: ID!
+  userId: ID!
+  bands: [Band!]
+  genres: [Genre!]
+  artists: [Artist!]
+  tracks: [Track!]
+}
+
 type Query {
   artist(id: String!): Artist!
   artists: [Artist!]!
@@ -71,6 +80,7 @@ type Query {
   track(id: String!): Track!
   tracks: [Track!]!
   user(id: String!): User!
+  favourites: [Favourite!]!
 }
 
 type Mutation {
@@ -90,4 +100,8 @@ type Mutation {
   deleteTrack(id: String!): Track!
   updateTrack(id: ID!, title: String, albums: [String!], bands: [String!], duration: Int, released: Int, genres: [String!]): Track!
   register(firstName: String, secondName: String, password: String!, email: String!): User!
+  addTrackToFavourites(userId: ID!, trackId: ID!): Favourite!
+  addBandToFavourites(userId: ID!, bandId: ID!): Favourite!
+  addArtistToFavourites(userId: ID!, artistId: ID!): Favourite!
+  addGenreToFavourites(userId: ID!, genreId: ID!): Favourite!
 }
