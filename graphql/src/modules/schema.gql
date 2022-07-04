@@ -51,6 +51,14 @@ type Album {
   image: String
 }
 
+type User {
+  id: ID!
+  firstName: String
+  secondName: String
+  password: String!
+  email: String!
+}
+
 type Query {
   artist(id: String!): Artist!
   artists: [Artist!]!
@@ -62,6 +70,7 @@ type Query {
   albums: [Album!]!
   track(id: String!): Track!
   tracks: [Track!]!
+  user(id: String!): User!
 }
 
 type Mutation {
@@ -80,4 +89,5 @@ type Mutation {
   createTrack(title: String, albums: [String!], bands: [String!], duration: Int, released: Int, genres: [String!]): Track!
   deleteTrack(id: String!): Track!
   updateTrack(id: ID!, title: String, albums: [String!], bands: [String!], duration: Int, released: Int, genres: [String!]): Track!
+  register(firstName: String, secondName: String, password: String!, email: String!): User!
 }

@@ -2,24 +2,26 @@ import 'dotenv/config';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ArtistModule } from './models/Artist/artist.module.js';
-import { BandModule } from './models/Band/band.module.js';
-import { GenreModule } from './models/Genre/genre.module.js';
-import { AlbumModule } from './models/Album/album.module.js';
-import { TrackModule } from './models/Track/track.module.js';
+import { ArtistModule } from './modules/Artist/artist.module.js';
+import { BandModule } from './modules/Band/band.module.js';
+import { GenreModule } from './modules/Genre/genre.module.js';
+import { AlbumModule } from './modules/Album/album.module.js';
+import { TrackModule } from './modules/Track/track.module.js';
+import { UserModule } from './modules/User/user.module.js';
 
 @Module({
     imports: [
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
-            autoSchemaFile: './src/models/schema.gql',
+            autoSchemaFile: './src/modules/schema.gql',
             playground: process.env.APP_ENV === 'dev'
         } as ApolloDriverConfig),
         ArtistModule,
         BandModule,
         GenreModule,
         AlbumModule,
-        TrackModule
+        TrackModule,
+        UserModule
     ]
 })
 export class AppModule {

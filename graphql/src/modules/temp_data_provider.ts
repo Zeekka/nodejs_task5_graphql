@@ -164,3 +164,34 @@ export let tracks = [
         genres: ["23213k2k3j231", "12313124231"],
     },
 ];
+
+export let users = [
+    {
+        id: "12345",
+        firstName: "Bob",
+        secondName: "Bobski",
+        password: "password",
+        email: "bob.email.com"
+    },
+    {
+        id: "54321",
+        firstName: "Lisa",
+        secondName: "Bobski",
+        password: "password1",
+        email: "lisa.email.com"
+    },
+    {
+        id: "13579",
+        firstName: "Klya",
+        secondName: "Bobski",
+        password: "password2",
+        email: "klya.email.com"
+    },
+    {
+        id: "24680",
+        firstName: "Nina",
+        secondName: "Bobski",
+        password: "password",
+        email: "Nina.email.com"
+    }
+];
