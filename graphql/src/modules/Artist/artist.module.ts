@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ArtistResolver } from './artist.resolver.js';
 
 @Module({
-    providers: [ArtistResolver]
+  providers: [ArtistResolver],
 })
-export class ArtistModule {
-}
+export class ArtistModule {}

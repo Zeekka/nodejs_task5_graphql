@@ -3,18 +3,18 @@ import { type } from 'os';
 
 @ObjectType()
 export class Genre {
-    @Field(type => ID)
-    id: string;
+  @Field((type) => ID)
+  id: string;
 
-    @Field({nullable: true})
-    name?: string;
+  @Field({ nullable: true })
+  name?: string;
 
-    @Field({nullable: true})
-    description?: string;
+  @Field({ nullable: true })
+  description?: string;
 
-    @Field({nullable: true})
-    country?: string;
+  @Field({ nullable: true })
+  country?: string;
 
-    @Field(type => Int, {nullable: true})
-    year?: number;
+  @Field((type) => Int, { nullable: true })
+  year?: number;
 }

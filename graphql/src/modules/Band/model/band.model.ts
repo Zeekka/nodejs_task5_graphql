@@ -4,21 +4,21 @@ import { Genre } from '../../Genre/model/genre.model.js';
 
 @ObjectType()
 export class Band {
-    @Field(type => ID)
-    id: string;
+  @Field((type) => ID)
+  id: string;
 
-    @Field({nullable: true})
-    name?: string;
+  @Field({ nullable: true })
+  name?: string;
 
-    @Field({nullable: true})
-    origin?: string;
+  @Field({ nullable: true })
+  origin?: string;
 
-    @Field(type => [Artist], {nullable: true})
-    members?: string[];
+  @Field((type) => [Artist], { nullable: true })
+  members?: string[];
 
-    @Field({nullable: true})
-    website?: string;
+  @Field({ nullable: true })
+  website?: string;
 
-    @Field(type => [Genre], { nullable: true })
-    genres?: string[];
+  @Field((type) => [Genre], { nullable: true })
+  genres?: string[];
 }

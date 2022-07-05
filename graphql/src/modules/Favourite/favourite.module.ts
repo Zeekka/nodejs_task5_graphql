@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { FavouriteResolver } from './favourite.resolver.js';
 
 @Module({
-    providers: [FavouriteResolver]
+  providers: [FavouriteResolver],
 })
-export class FavouriteModule {
-}
+export class FavouriteModule {}

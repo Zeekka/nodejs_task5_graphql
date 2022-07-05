@@ -11,20 +11,19 @@ import { UserModule } from './modules/User/user.module.js';
 import { FavouriteModule } from './modules/Favourite/favourite.module.js';
 
 @Module({
-    imports: [
-        GraphQLModule.forRoot<ApolloDriverConfig>({
-            driver: ApolloDriver,
-            autoSchemaFile: './src/modules/schema.gql',
-            playground: process.env.APP_ENV === 'dev'
-        } as ApolloDriverConfig),
-        ArtistModule,
-        BandModule,
-        GenreModule,
-        AlbumModule,
-        TrackModule,
-        UserModule,
-        FavouriteModule
-    ]
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: './src/modules/schema.gql',
+      playground: process.env.APP_ENV === 'dev',
+    } as ApolloDriverConfig),
+    ArtistModule,
+    BandModule,
+    GenreModule,
+    AlbumModule,
+    TrackModule,
+    UserModule,
+    FavouriteModule,
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}

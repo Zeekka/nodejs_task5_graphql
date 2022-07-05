@@ -6,27 +6,27 @@ import { Track } from '../../Track/model/track.model.js';
 
 @ObjectType()
 export class Album {
-    @Field(type => ID)
-    id: string;
+  @Field((type) => ID)
+  id: string;
 
-    @Field({nullable: true})
-    name?: string;
+  @Field({ nullable: true })
+  name?: string;
 
-    @Field(type => Int, {nullable: true})
-    released?: number;
+  @Field((type) => Int, { nullable: true })
+  released?: number;
 
-    @Field(type => [Artist], {nullable: true})
-    artists?: string[];
+  @Field((type) => [Artist], { nullable: true })
+  artists?: string[];
 
-    @Field(type => [Band], {nullable: true})
-    bands?: string[];
+  @Field((type) => [Band], { nullable: true })
+  bands?: string[];
 
-    @Field(type => [Track], {nullable: true})
-    tracks?: string[];
+  @Field((type) => [Track], { nullable: true })
+  tracks?: string[];
 
-    @Field(type => [Genre], {nullable: true})
-    genres?: string[];
+  @Field((type) => [Genre], { nullable: true })
+  genres?: string[];
 
-    @Field({nullable: true})
-    image?: string;
+  @Field({ nullable: true })
+  image?: string;
 }
