@@ -1,7 +1,5 @@
 import {
   Args,
-  ID,
-  Int,
   Mutation,
   Parent,
   Query,
@@ -9,16 +7,22 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { User } from './model/user.model.js';
-import { users as ImpUsers } from '../temp_data_provider.js';
-import * as crypto from 'crypto';
-
-const users = ImpUsers;
+import { UserDto } from './dto/user.dto.js';
+import { UserRepository } from './providers/user.repository.js';
+import { Document } from 'mongoose';
 
 @Resolver((of) => User)
 export class UserResolver {
+  constructor(private userRepository: UserRepository) {}
+
   @Query((returns) => User)
   async user(@Args('id') id: string) {
-    return users.filter((user) => user.id === id).pop();
+    return this.userRepository.user(id);
+  }
+
+  @ResolveField('id', () => String)
+  async id(@Parent() user: Document) {
+    return user._id.toString();
   }
 
   @Mutation((returns) => User)
@@ -30,9 +34,11 @@ export class UserResolver {
     @Args({ name: 'password', type: () => String }) password: string,
     @Args({ name: 'email', type: () => String }) email: string,
   ) {
-    const id = crypto.randomBytes(15).toString('hex');
-    const user = { id, firstName, secondName, password, email };
-    users.push(user);
-    return user;
+    const userDto = new UserDto();
+    userDto.firstName = firstName;
+    userDto.secondName = secondName;
+    userDto.email = email;
+    userDto.password = password;
+    return this.userRepository.register(userDto);
   }
 }

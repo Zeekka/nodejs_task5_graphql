@@ -9,9 +9,11 @@ import { AlbumModule } from './modules/Album/album.module.js';
 import { TrackModule } from './modules/Track/track.module.js';
 import { UserModule } from './modules/User/user.module.js';
 import { FavouriteModule } from './modules/Favourite/favourite.module.js';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
+    MongooseModule.forRoot(process.env.MONGO_URL),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: './src/modules/schema.gql',
