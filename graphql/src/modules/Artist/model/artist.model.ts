@@ -1,6 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Band } from '../../Band/model/band.model.js';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 export type ArtistDocument = Artist & Document;
 
@@ -34,6 +35,7 @@ export class Artist {
   @Field({ nullable: true })
   country?: string;
 
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Band' }] })
   @Field((type) => [Band], { nullable: true })
   bands?: string[];
 

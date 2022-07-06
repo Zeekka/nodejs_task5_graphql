@@ -8,29 +8,36 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Band } from './model/band.model.js';
-import * as crypto from 'crypto';
 import { Artist } from '../Artist/model/artist.model.js';
 import {
   artists as ImpArtist,
-  bands as ImpBands,
   genres as ImpGenres,
 } from '../temp_data_provider.js';
 import { Genre } from '../Genre/model/genre.model.js';
+import { BandRepository } from './providers/band.repository.js';
+import { BandDto } from './dto/band.dto.js';
+import { Document } from 'mongoose';
 
-let bands = ImpBands;
 const artists = ImpArtist;
 const genres = ImpGenres;
 
 @Resolver((of) => Band)
 export class BandResolver {
+  constructor(private bandRepository: BandRepository) {}
+
   @Query((returns) => Band)
-  async band(@Args('id') id: string) {
-    return bands.filter((band) => band.id === id).pop();
+  async band(@Args('id') id: string): Promise<Band> {
+    return this.bandRepository.findOneById(id);
   }
 
   @Query((returns) => [Band])
-  async bands() {
-    return bands;
+  async bands(): Promise<Band[]> {
+    return this.bandRepository.findAll();
+  }
+
+  @ResolveField('id', () => ID)
+  async id(@Parent() band: Document): Promise<string> {
+    return band._id.toString();
   }
 
   @ResolveField('members', (returns) => [Artist])
@@ -73,25 +80,19 @@ export class BandResolver {
     @Args({ name: 'genres', type: () => [String], nullable: true })
     genres: string[],
   ) {
-    const id = crypto.randomBytes(15).toString('hex');
-    const band = { id: id, name, origin, members, website, genres };
-    bands.push(band);
-    return band;
+    const bandDto = new BandDto();
+    bandDto.name = name;
+    bandDto.origin = origin;
+    bandDto.members = members;
+    bandDto.website = website;
+    bandDto.genres = genres;
+
+    return this.bandRepository.createBand(bandDto);
   }
 
   @Mutation((returns) => Band)
   async deleteBand(@Args('id') id: string) {
-    let deletedBand;
-    bands = bands.filter((band) => {
-      if (band.id === id) {
-        deletedBand = band;
-        return false;
-      }
-
-      return true;
-    });
-
-    return deletedBand;
+    return this.bandRepository.deleteBand(id);
   }
 
   @Mutation((returns) => Band)
@@ -107,19 +108,13 @@ export class BandResolver {
     @Args({ name: 'genres', type: () => [String], nullable: true })
     genres: string[],
   ) {
-    let updatedBand;
-    bands.forEach((band) => {
-      if (band.id === id) {
-        band.name = name;
-        band.origin = origin;
-        band.members = members;
-        band.website = website;
-        band.genres = genres;
+    const bandDto = new BandDto();
+    bandDto.name = name;
+    bandDto.origin = origin;
+    bandDto.members = members;
+    bandDto.website = website;
+    bandDto.genres = genres;
 
-        updatedBand = band;
-      }
-    });
-
-    return updatedBand;
+    return this.bandRepository.updateBand(id, bandDto);
   }
 }

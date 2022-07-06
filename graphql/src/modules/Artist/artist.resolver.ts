@@ -7,14 +7,11 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { Artist } from './model/artist.model.js';
-import { bands as ImpBands } from '../temp_data_provider.js';
+import { Artist, ArtistDocument } from './model/artist.model.js';
 import { Band } from '../Band/model/band.model.js';
 import { ArtistRepository } from './providers/artist.repository.js';
 import { ArtistDto } from './dto/artist.dto.js';
 import { Document } from 'mongoose';
-
-const bands = ImpBands;
 
 @Resolver((of) => Artist)
 export class ArtistResolver {
@@ -36,17 +33,8 @@ export class ArtistResolver {
   }
 
   @ResolveField('bands', (type) => [Band])
-  async bands(@Parent() artist: Artist) {
-    return artist.bands.map((bandId) => {
-      let bandObj;
-      bands.forEach((band) => {
-        if (band.id === bandId) {
-          bandObj = band;
-        }
-      });
-
-      return bandObj;
-    });
+  async bands(@Parent() artist: ArtistDocument) {
+    return this.artistRepository.bands(artist);
   }
 
   @Mutation((returns) => Artist)
