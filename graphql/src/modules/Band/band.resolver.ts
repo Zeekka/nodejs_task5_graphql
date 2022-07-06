@@ -47,16 +47,7 @@ export class BandResolver {
 
   @ResolveField('genres', (returns) => [Genre])
   async genres(@Parent() band: Band) {
-    return band.genres.map((genreId) => {
-      let genreObj;
-      genres.forEach((genre) => {
-        if (genre.id === genreId) {
-          genreObj = genre;
-        }
-      });
-
-      return genreObj;
-    });
+    return this.bandRepository.genres(band);
   }
 
   @Mutation((returns) => Band)

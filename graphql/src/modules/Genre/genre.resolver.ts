@@ -1,20 +1,34 @@
-import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import * as crypto from 'crypto';
-import { genres as ImpGenres } from '../temp_data_provider.js';
-import { Genre } from './model/genre.model.js';
-
-let genres = ImpGenres;
+import {
+  Args,
+  ID,
+  Int,
+  Mutation,
+  Query,
+  ResolveField,
+  Resolver,
+  Parent,
+} from '@nestjs/graphql';
+import { Genre, GenreDocument } from './model/genre.model.js';
+import { GenreRepository } from './providers/genre.repository.js';
+import { GenreDto } from './dto/genre.dto.js';
 
 @Resolver((of) => Genre)
 export class GenreResolver {
+  constructor(private genreRepository: GenreRepository) {}
+
   @Query((returns) => Genre)
-  async genre(@Args('id') id: string) {
-    return genres.filter((genre) => genre.id === id).pop();
+  async genre(@Args('id') id: string): Promise<Genre> {
+    return this.genreRepository.findOneById(id);
   }
 
   @Query((returns) => [Genre])
-  async genres() {
-    return genres;
+  async genres(): Promise<Genre[]> {
+    return this.genreRepository.findAll();
+  }
+
+  @ResolveField('id', () => ID)
+  async id(@Parent() genre: GenreDocument): Promise<string> {
+    return genre._id.toString();
   }
 
   @Mutation((returns) => Genre)
@@ -26,25 +40,18 @@ export class GenreResolver {
     country: string,
     @Args({ name: 'year', type: () => Int, nullable: true }) year: number,
   ) {
-    const id = crypto.randomBytes(15).toString('hex');
-    const genre = { id: id, name, description, country, year };
-    genres.push(genre);
-    return genre;
+    const genreDto = new Genre();
+    genreDto.name = name;
+    genreDto.description = description;
+    genreDto.country = country;
+    genreDto.year = year;
+
+    return this.genreRepository.createGenre(genreDto);
   }
 
   @Mutation((returns) => Genre)
   async deleteGenre(@Args('id') id: string) {
-    let deletedGenre;
-    genres = genres.filter((genre) => {
-      if (genre.id === id) {
-        deletedGenre = genre;
-        return false;
-      }
-
-      return true;
-    });
-
-    return deletedGenre;
+    return this.genreRepository.deleteGenre(id);
   }
 
   @Mutation((returns) => Genre)
@@ -57,18 +64,12 @@ export class GenreResolver {
     country: string,
     @Args({ name: 'year', type: () => Int, nullable: true }) year: number,
   ) {
-    let updatedGenre;
-    genres.forEach((genre) => {
-      if (genre.id === id) {
-        genre.name = name;
-        genre.description = description;
-        genre.country = country;
-        genre.year = year;
+    const genreDto = new GenreDto();
+    genreDto.name = name;
+    genreDto.description = description;
+    genreDto.country = country;
+    genreDto.year = year;
 
-        updatedGenre = genre;
-      }
-    });
-
-    return updatedGenre;
+    return this.genreRepository.updateGenre(id, genreDto);
   }
 }

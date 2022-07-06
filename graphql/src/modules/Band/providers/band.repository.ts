@@ -4,12 +4,14 @@ import { Band, BandDocument } from '../model/band.model.js';
 import { Model } from 'mongoose';
 import { BandDto } from '../dto/band.dto.js';
 import { Artist, ArtistDocument } from '../../Artist/model/artist.model.js';
+import { Genre, GenreDocument } from '../../Genre/model/genre.model.js';
 
 @Injectable()
 export class BandRepository {
   constructor(
     @InjectModel(Band.name) private bandModel: Model<BandDocument>,
     @InjectModel(Artist.name) private artistModel: Model<ArtistDocument>,
+    @InjectModel(Genre.name) private genreModel: Model<GenreDocument>,
   ) {}
 
   async findOneById(id: string): Promise<Band> {
@@ -36,5 +38,10 @@ export class BandRepository {
   async members(band: BandDocument): Promise<Artist[]> {
     const artistIds: string[] = band.members;
     return this.artistModel.find({ _id: { $in: artistIds } }).exec();
+  }
+
+  async genres(band: Band): Promise<Genre[]> {
+    const genreIds: string[] = band.genres;
+    return this.genreModel.find({ _id: { $in: genreIds } }).exec();
   }
 }

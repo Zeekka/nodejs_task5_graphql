@@ -28,6 +28,7 @@ export class Band {
   @Field({ nullable: true })
   website?: string;
 
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Genre' }] })
   @Field((type) => [Genre], { nullable: true })
   genres?: string[];
 }
