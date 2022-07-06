@@ -1,6 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { users } from '../../temp_data_provider.js';
 
 export type UserDocument = User & Document;
 

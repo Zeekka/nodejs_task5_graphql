@@ -8,26 +8,31 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { Artist } from './model/artist.model.js';
-import * as crypto from 'crypto';
-import {
-  bands as ImpBands,
-  artists as ImpArtist,
-} from '../temp_data_provider.js';
+import { bands as ImpBands } from '../temp_data_provider.js';
 import { Band } from '../Band/model/band.model.js';
+import { ArtistRepository } from './providers/artist.repository.js';
+import { ArtistDto } from './dto/artist.dto.js';
+import { Document } from 'mongoose';
 
 const bands = ImpBands;
-let artists = ImpArtist;
 
 @Resolver((of) => Artist)
 export class ArtistResolver {
+  constructor(private artistRepository: ArtistRepository) {}
+
   @Query((returns) => Artist)
   async artist(@Args('id') id: string) {
-    return artists.filter((artist) => artist.id === id).pop();
+    return this.artistRepository.findOneById(id);
   }
 
   @Query((returns) => [Artist])
   async artists() {
-    return artists;
+    return this.artistRepository.findAll();
+  }
+
+  @ResolveField('id', () => ID)
+  async id(@Parent() artist: Document): Promise<string> {
+    return artist._id.toString();
   }
 
   @ResolveField('bands', (type) => [Band])
@@ -63,35 +68,21 @@ export class ArtistResolver {
     @Args({ name: 'instruments', type: () => [String], nullable: true })
     instruments: string[],
   ) {
-    const id = crypto.randomBytes(15).toString('hex');
-    const artist = {
-      id: id,
-      firstName,
-      secondName,
-      middleName,
-      birthDate,
-      birthPlace,
-      country,
-      bands,
-      instruments,
-    };
-    artists.push(artist);
-    return artist;
+    const artistDto = new ArtistDto();
+    artistDto.firstName = firstName;
+    artistDto.secondName = secondName;
+    artistDto.middleName = middleName;
+    artistDto.birthDate = birthDate;
+    artistDto.birthPlace = birthPlace;
+    artistDto.country = country;
+    artistDto.bands = bands;
+    artistDto.instruments = instruments;
+    return this.artistRepository.createArtist(artistDto);
   }
 
   @Mutation((returns) => Artist)
   async deleteArtist(@Args('id') id: string) {
-    let deletedArtist;
-    artists = artists.filter((artist) => {
-      if (artist.id === id) {
-        deletedArtist = artist;
-        return false;
-      }
-
-      return true;
-    });
-
-    return deletedArtist;
+    return this.artistRepository.deleteArtist(id);
   }
 
   @Mutation((returns) => Artist)
@@ -114,21 +105,16 @@ export class ArtistResolver {
     @Args({ name: 'instruments', type: () => [String], nullable: true })
     instruments: string[],
   ) {
-    let updatedArtist;
-    artists.forEach((artist) => {
-      if (artist.id === id) {
-        artist.firstName = firstName;
-        artist.secondName = secondName;
-        artist.middleName = middleName;
-        artist.birthDate = birthDate;
-        artist.country = country;
-        artist.bands = bands;
-        artist.instruments = instruments;
+    const artistDto = new ArtistDto();
+    artistDto.firstName = firstName;
+    artistDto.secondName = secondName;
+    artistDto.middleName = middleName;
+    artistDto.birthPlace = birthPlace;
+    artistDto.birthDate = birthDate;
+    artistDto.country = country;
+    artistDto.bands = bands;
+    artistDto.instruments = instruments;
 
-        updatedArtist = artist;
-      }
-    });
-
-    return updatedArtist;
+    return this.artistRepository.updateArtist(id, artistDto);
   }
 }
