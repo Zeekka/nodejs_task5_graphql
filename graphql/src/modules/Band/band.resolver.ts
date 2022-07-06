@@ -7,7 +7,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { Band } from './model/band.model.js';
+import { Band, BandDocument } from './model/band.model.js';
 import { Artist } from '../Artist/model/artist.model.js';
 import {
   artists as ImpArtist,
@@ -41,17 +41,8 @@ export class BandResolver {
   }
 
   @ResolveField('members', (returns) => [Artist])
-  async members(@Parent() band: Band) {
-    return band.members.map((memberId) => {
-      let artistObj;
-      artists.forEach((artist) => {
-        if (artist.id === memberId) {
-          artistObj = artist;
-        }
-      });
-
-      return artistObj;
-    });
+  async members(@Parent() band: BandDocument) {
+    return this.bandRepository.members(band);
   }
 
   @ResolveField('genres', (returns) => [Genre])
