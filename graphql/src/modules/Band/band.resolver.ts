@@ -9,17 +9,10 @@ import {
 } from '@nestjs/graphql';
 import { Band, BandDocument } from './model/band.model.js';
 import { Artist } from '../Artist/model/artist.model.js';
-import {
-  artists as ImpArtist,
-  genres as ImpGenres,
-} from '../temp_data_provider.js';
 import { Genre } from '../Genre/model/genre.model.js';
 import { BandRepository } from './providers/band.repository.js';
 import { BandDto } from './dto/band.dto.js';
 import { Document } from 'mongoose';
-
-const artists = ImpArtist;
-const genres = ImpGenres;
 
 @Resolver((of) => Band)
 export class BandResolver {

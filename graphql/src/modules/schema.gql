@@ -62,7 +62,7 @@ type User {
 
 type Favourite {
   id: ID!
-  userId: ID!
+  userId: User!
   bands: [Band!]
   genres: [Genre!]
   artists: [Artist!]
@@ -81,7 +81,7 @@ type Query {
   track(id: String!): Track!
   tracks: [Track!]!
   user(id: String!): User!
-  favourites: [Favourite!]!
+  favourite(id: String!): Favourite!
 }
 
 type Mutation {

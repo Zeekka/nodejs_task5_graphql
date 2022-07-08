@@ -1,213 +1,82 @@
 import {
   Args,
   ID,
-  Int,
   Mutation,
   Parent,
   Query,
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import * as crypto from 'crypto';
-import {
-  genres as ImpGenres,
-  artists as ImpArtists,
-  bands as ImpBands,
-  tracks as ImpTracks,
-  favourites as ImpFavourites,
-} from '../temp_data_provider.js';
 import { Artist } from '../Artist/model/artist.model.js';
 import { Band } from '../Band/model/band.model.js';
 import { Genre } from '../Genre/model/genre.model.js';
 import { Track } from '../Track/model/track.model.js';
-import { Favourite } from './model/favourite.model.js';
-
-const genres = ImpGenres;
-const artists = ImpArtists;
-const bands = ImpBands;
-const tracks = ImpTracks;
-const favourites = ImpFavourites;
+import { Favourite, FavouriteDocument } from './model/favourite.model.js';
+import { FavouriteRepository } from './providers/favourite.repository.js';
 
 @Resolver((of) => Favourite)
 export class FavouriteResolver {
-  @Query((returns) => [Favourite])
-  async favourites() {
-    return favourites;
+  constructor(private favouriteRepository: FavouriteRepository) {}
+
+  @Query((returns) => Favourite)
+  async favourite(@Args('id') id: string) {
+    return this.favouriteRepository.findOneByUserId(id);
+  }
+
+  @ResolveField('id', () => ID)
+  async id(@Parent() favourite: FavouriteDocument): Promise<string> {
+    return favourite._id.toString();
   }
 
   @ResolveField('artists', (type) => [Artist])
   async artists(@Parent() favourite: Favourite) {
-    return favourite.artists.map((artistId) => {
-      let artistObj;
-      artists.forEach((artist) => {
-        if (artist.id === artistId) {
-          artistObj = artist;
-        }
-      });
-
-      return artistObj;
-    });
+    return this.favouriteRepository.artists(favourite);
   }
 
   @ResolveField('bands', (type) => [Band])
   async bands(@Parent() favourite: Favourite) {
-    return favourite.bands.map((bandId) => {
-      let bandObj;
-      bands.forEach((band) => {
-        if (band.id === bandId) {
-          bandObj = band;
-        }
-      });
-
-      return bandObj;
-    });
+    return this.favouriteRepository.bands(favourite);
   }
 
   @ResolveField('genres', (type) => [Genre])
   async genres(@Parent() favourite: Favourite) {
-    return favourite.genres.map((genreId) => {
-      let genreObj;
-      genres.forEach((genre) => {
-        if (genre.id === genreId) {
-          genreObj = genre;
-        }
-      });
-
-      return genreObj;
-    });
+    return this.favouriteRepository.genres(favourite);
   }
 
   @ResolveField('tracks', (type) => [Track])
   async tracks(@Parent() favourite: Favourite) {
-    return favourite.tracks.map((trackId) => {
-      let trackObj;
-      tracks.forEach((track) => {
-        if (track.id === trackId) {
-          trackObj = track;
-        }
-      });
-
-      return trackObj;
-    });
+    return this.favouriteRepository.tracks(favourite);
   }
 
   @Mutation((returns) => Favourite)
   async addTrackToFavourites(
     @Args({ name: 'userId', type: () => ID }) userId: string,
-    @Args({ name: 'trackId', type: () => ID }) trackId: number,
+    @Args({ name: 'trackId', type: () => ID }) trackId: string,
   ) {
-    let userFavorites;
-    favourites.forEach((favourite) => {
-      if (favourite.userId === userId) {
-        userFavorites = favourite;
-      }
-    });
-
-    if (userFavorites === undefined) {
-      const id = crypto.randomBytes(15).toString('hex');
-      userFavorites = {
-        id: id,
-        userId: userId,
-        bands: [],
-        genres: [],
-        artists: [],
-        tracks: [],
-      };
-
-      favourites.push(userFavorites);
-    }
-
-    userFavorites.tracks.push(trackId);
-    return userFavorites;
+    return this.favouriteRepository.addTrackToFavourites(userId, trackId);
   }
 
   @Mutation((returns) => Favourite)
   async addBandToFavourites(
     @Args({ name: 'userId', type: () => ID }) userId: string,
-    @Args({ name: 'bandId', type: () => ID }) bandId: number,
+    @Args({ name: 'bandId', type: () => ID }) bandId: string,
   ) {
-    let userFavorites;
-    favourites.forEach((favourite) => {
-      if (favourite.userId === userId) {
-        userFavorites = favourite;
-      }
-    });
-
-    if (userFavorites === undefined) {
-      const id = crypto.randomBytes(15).toString('hex');
-      userFavorites = {
-        id: id,
-        userId: userId,
-        bands: [],
-        genres: [],
-        artists: [],
-        tracks: [],
-      };
-
-      favourites.push(userFavorites);
-    }
-
-    userFavorites.bands.push(bandId);
-    return userFavorites;
+    return this.favouriteRepository.addBandToFavourites(userId, bandId);
   }
 
   @Mutation((returns) => Favourite)
   async addArtistToFavourites(
     @Args({ name: 'userId', type: () => ID }) userId: string,
-    @Args({ name: 'artistId', type: () => ID }) artistId: number,
+    @Args({ name: 'artistId', type: () => ID }) artistId: string,
   ) {
-    let userFavorites;
-    favourites.forEach((favourite) => {
-      if (favourite.userId === userId) {
-        userFavorites = favourite;
-      }
-    });
-
-    if (userFavorites === undefined) {
-      const id = crypto.randomBytes(15).toString('hex');
-      userFavorites = {
-        id: id,
-        userId: userId,
-        bands: [],
-        genres: [],
-        artists: [],
-        tracks: [],
-      };
-
-      favourites.push(userFavorites);
-    }
-
-    userFavorites.artists.push(artistId);
-    return userFavorites;
+    return this.favouriteRepository.addArtistToFavourites(userId, artistId);
   }
 
   @Mutation((returns) => Favourite)
   async addGenreToFavourites(
     @Args({ name: 'userId', type: () => ID }) userId: string,
-    @Args({ name: 'genreId', type: () => ID }) genreId: number,
+    @Args({ name: 'genreId', type: () => ID }) genreId: string,
   ) {
-    let userFavorites;
-    favourites.forEach((favourite) => {
-      if (favourite.userId === userId) {
-        userFavorites = favourite;
-      }
-    });
-
-    if (userFavorites === undefined) {
-      const id = crypto.randomBytes(15).toString('hex');
-      userFavorites = {
-        id: id,
-        userId: userId,
-        bands: [],
-        genres: [],
-        artists: [],
-        tracks: [],
-      };
-
-      favourites.push(userFavorites);
-    }
-
-    userFavorites.genres.push(genreId);
-    return userFavorites;
+    return this.favouriteRepository.addGenreToFavourites(userId, genreId);
   }
 }
