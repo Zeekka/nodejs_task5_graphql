@@ -8,92 +8,51 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import * as crypto from 'crypto';
-import {
-  genres as ImpGenres,
-  albums as ImpAlbums,
-  artists as ImpArtists,
-  bands as ImpBands,
-  tracks as ImpTracks,
-} from '../temp_data_provider.js';
-import { Album } from './model/album.model.js';
+import { Album, AlbumDocument } from './model/album.model.js';
 import { Artist } from '../Artist/model/artist.model.js';
 import { Band } from '../Band/model/band.model.js';
 import { Genre } from '../Genre/model/genre.model.js';
 import { Track } from '../Track/model/track.model.js';
-
-const genres = ImpGenres;
-let albums = ImpAlbums;
-const artists = ImpArtists;
-const bands = ImpBands;
-const tracks = ImpTracks;
+import { AlbumRepository } from './providers/album.repository.js';
+import { AlbumDto } from './dto/album.dto.js';
 
 @Resolver((of) => Album)
 export class AlbumResolver {
+  constructor(private albumRepository: AlbumRepository) {}
+
   @Query((returns) => Album)
   async album(@Args('id') id: string) {
-    return albums.filter((album) => album.id === id).pop();
+    return this.albumRepository.findOneById(id);
   }
 
   @Query((returns) => [Album])
   async albums() {
-    return albums;
+    return this.albumRepository.findAll();
+  }
+
+  @ResolveField()
+  async id(@Parent() album: AlbumDocument) {
+    return album._id.toString();
   }
 
   @ResolveField('artists', (type) => [Artist])
   async artists(@Parent() album: Album) {
-    return album.artists.map((artistId) => {
-      let artistObj;
-      artists.forEach((artist) => {
-        if (artist.id === artistId) {
-          artistObj = artist;
-        }
-      });
-
-      return artistObj;
-    });
+    return this.albumRepository.artists(album);
   }
 
   @ResolveField('bands', (type) => [Band])
   async bands(@Parent() album: Album) {
-    return album.bands.map((bandId) => {
-      let bandObj;
-      bands.forEach((band) => {
-        if (band.id === bandId) {
-          bandObj = band;
-        }
-      });
-
-      return bandObj;
-    });
+    return this.albumRepository.bands(album);
   }
 
   @ResolveField('genres', (type) => [Genre])
   async genres(@Parent() album: Album) {
-    return album.genres.map((genreId) => {
-      let genreObj;
-      genres.forEach((genre) => {
-        if (genre.id === genreId) {
-          genreObj = genre;
-        }
-      });
-
-      return genreObj;
-    });
+    return this.albumRepository.genres(album);
   }
 
   @ResolveField('tracks', (type) => [Track])
   async tracks(@Parent() album: Album) {
-    return album.tracks.map((trackId) => {
-      let trackObj;
-      tracks.forEach((track) => {
-        if (track.id === trackId) {
-          trackObj = track;
-        }
-      });
-
-      return trackObj;
-    });
+    return this.albumRepository.tracks(album);
   }
 
   @Mutation((returns) => Album)
@@ -111,34 +70,20 @@ export class AlbumResolver {
     tracks: string[],
     @Args({ name: 'image', type: () => String, nullable: true }) image: string,
   ) {
-    const id = crypto.randomBytes(15).toString('hex');
-    const album = {
-      id: id,
-      name,
-      released,
-      artists,
-      bands,
-      genres,
-      tracks,
-      image,
-    };
-    albums.push(album);
-    return album;
+    const albumDto = new AlbumDto();
+    albumDto.name = name;
+    albumDto.artists = artists;
+    albumDto.bands = bands;
+    albumDto.genres = genres;
+    albumDto.tracks = tracks;
+    albumDto.image = image;
+
+    return this.albumRepository.createAlbum(albumDto);
   }
 
   @Mutation((returns) => Album)
   async deleteAlbum(@Args('id') id: string) {
-    let deletedAlbum;
-    albums = albums.filter((album) => {
-      if (album.id === id) {
-        deletedAlbum = album;
-        return false;
-      }
-
-      return true;
-    });
-
-    return deletedAlbum;
+    return this.albumRepository.deleteAlbum(id);
   }
 
   @Mutation((returns) => Album)
@@ -157,21 +102,14 @@ export class AlbumResolver {
     tracks: string[],
     @Args({ name: 'image', type: () => String, nullable: true }) image: string,
   ) {
-    let updatedAlbum;
-    albums.forEach((album) => {
-      if (album.id === id) {
-        album.name = name;
-        album.released = released;
-        album.artists = artists;
-        album.bands = bands;
-        album.genres = genres;
-        album.tracks = tracks;
-        album.image = image;
+    const albumDto = new AlbumDto();
+    albumDto.name = name;
+    albumDto.artists = artists;
+    albumDto.bands = bands;
+    albumDto.genres = genres;
+    albumDto.tracks = tracks;
+    albumDto.image = image;
 
-        updatedAlbum = album;
-      }
-    });
-
-    return updatedAlbum;
+    return this.albumRepository.updateAlbum(id, albumDto);
   }
 }

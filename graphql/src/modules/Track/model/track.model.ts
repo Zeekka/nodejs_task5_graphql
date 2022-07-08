@@ -18,6 +18,7 @@ export class Track {
   @Field({ nullable: true })
   title?: string;
 
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, name: 'Album' }] })
   @Field((type) => [Album], { nullable: true })
   albums?: string[];
 

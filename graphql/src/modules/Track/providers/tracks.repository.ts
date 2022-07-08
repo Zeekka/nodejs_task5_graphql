@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { Genre, GenreDocument } from '../../Genre/model/genre.model.js';
 import { Band, BandDocument } from '../../Band/model/band.model.js';
 import { TrackDto } from '../dto/track.dto.js';
-import { Album } from '../../Album/model/album.model.js';
+import { Album, AlbumDocument } from '../../Album/model/album.model.js';
 
 @Injectable()
 export class TracksRepository {
@@ -13,6 +13,7 @@ export class TracksRepository {
     @InjectModel(Track.name) private tracksModel: Model<TrackDocument>,
     @InjectModel(Genre.name) private genresModel: Model<GenreDocument>,
     @InjectModel(Band.name) private bandsModel: Model<BandDocument>,
+    @InjectModel(Album.name) private albumModel: Model<AlbumDocument>,
   ) {}
 
   async findAll(): Promise<Track[]> {
@@ -38,7 +39,7 @@ export class TracksRepository {
 
   async albums(track: Track): Promise<Album[]> {
     const albumsIds = track.albums;
-    return [];
+    return this.albumModel.find({ _id: { $in: albumsIds } }).exec();
   }
 
   async bands(track: Track): Promise<Band[]> {
