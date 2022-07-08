@@ -61,4 +61,5 @@ RUN npm config set cache /tmp/npm_cache
 # Если не используешь докер
 # Запуск MongoDB
 1) Билдишь образ MongoDB контейнера `docker build -t task5_mongodb:latest --file ./docker/MongoDBDockerfile ./docker/`
-2) Запускаешь контейнер командой `docker run -d --network host task5_mongodb`
+2) Создать volume для записи данных локально `docker volume create mongodata`
+3) Запускаешь контейнера из корневой директории проекта командой `docker run -d --network host -v mongodata:/data/db task5_mongodb`
