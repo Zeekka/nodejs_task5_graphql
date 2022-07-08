@@ -10,6 +10,7 @@ import { User } from './model/user.model.js';
 import { UserDto } from './dto/user.dto.js';
 import { UserRepository } from './providers/user.repository.js';
 import { Document } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 
 @Resolver((of) => User)
 export class UserResolver {
@@ -38,7 +39,7 @@ export class UserResolver {
     userDto.firstName = firstName;
     userDto.secondName = secondName;
     userDto.email = email;
-    userDto.password = password;
+    userDto.password = await bcrypt.hash(password, 10);
     return this.userRepository.register(userDto);
   }
 }
