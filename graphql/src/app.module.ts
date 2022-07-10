@@ -10,6 +10,7 @@ import { TrackModule } from './modules/Track/track.module.js';
 import { UserModule } from './modules/User/user.module.js';
 import { FavouriteModule } from './modules/Favourite/favourite.module.js';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PluginsModule } from './plugins/plugins.module.js';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     TrackModule,
     UserModule,
     FavouriteModule,
+    PluginsModule,
   ],
 })
 export class AppModule {}
