@@ -1,0 +1,108 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Genre {
+  id: ID!
+  name: String
+  description: String
+  country: String
+  year: Int
+}
+
+type Band {
+  id: ID!
+  name: String
+  origin: String
+  members: [Artist!]
+  website: String
+  genres: [Genre!]
+}
+
+type Artist {
+  id: ID!
+  firstName: String
+  secondName: String
+  middleName: String
+  birthDate: String
+  birthPlace: String
+  country: String
+  bands: [Band!]
+  instruments: [String!]
+}
+
+type Track {
+  id: ID!
+  title: String
+  albums: [Album!]!
+  bands: [Band!]
+  duration: Int
+  released: Int
+  genres: [Genre!]
+}
+
+type Album {
+  id: ID!
+  name: String
+  released: Int
+  artists: [Artist!]
+  bands: [Band!]
+  tracks: [Track!]
+  genres: [Genre!]
+  image: String
+}
+
+type User {
+  id: ID!
+  firstName: String
+  secondName: String
+  password: String!
+  email: String!
+}
+
+type Favourite {
+  id: ID!
+  userId: User!
+  bands: [Band!]
+  genres: [Genre!]
+  artists: [Artist!]
+  tracks: [Track!]
+}
+
+type Query {
+  artist(id: String!): Artist!
+  artists: [Artist!]!
+  band(id: String!): Band!
+  bands: [Band!]!
+  genre(id: String!): Genre!
+  genres: [Genre!]!
+  album(id: String!): Album!
+  albums: [Album!]!
+  track(id: String!): Track!
+  tracks: [Track!]!
+  user(id: String!): User!
+  favourite(id: String!): Favourite!
+}
+
+type Mutation {
+  createArtist(firstName: String, secondName: String, middleName: String, birthDate: String, birthPlace: String, country: String, bands: [String!], instruments: [String!]): Artist!
+  deleteArtist(id: String!): Artist!
+  updateArtist(id: ID!, firstName: String, secondName: String, middleName: String, birthDate: String, birthPlace: String, country: String, bands: [String!], instruments: [String!]): Artist!
+  createBand(name: String, origin: String, members: [String!], website: String, genres: [String!]): Band!
+  deleteBand(id: String!): Band!
+  updateBand(id: ID!, name: String, origin: String, members: [String!], website: String, genres: [String!]): Band!
+  createGenre(name: String, description: String, country: String, year: Int): Genre!
+  deleteGenre(id: String!): Genre!
+  updateGenre(id: ID!, name: String, description: String, country: String, year: Int): Genre!
+  createAlbum(name: String, released: Int, artists: [String!], bands: [String!], genres: [String!], tracks: [String!], image: String): Album!
+  deleteAlbum(id: String!): Album!
+  updateAlbum(id: ID!, name: String, released: Int, artists: [String!], bands: [String!], genres: [String!], tracks: [String!], image: String): Album!
+  createTrack(title: String, albums: [String!], bands: [String!], duration: Int, released: Int, genres: [String!]): Track!
+  deleteTrack(id: String!): Track!
+  updateTrack(id: ID!, title: String, albums: [String!], bands: [String!], duration: Int, released: Int, genres: [String!]): Track!
+  register(firstName: String, secondName: String, password: String!, email: String!): User!
+  addTrackToFavourites(userId: ID!, trackId: ID!): Favourite!
+  addBandToFavourites(userId: ID!, bandId: ID!): Favourite!
+  addArtistToFavourites(userId: ID!, artistId: ID!): Favourite!
+  addGenreToFavourites(userId: ID!, genreId: ID!): Favourite!
+}

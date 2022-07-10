@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "run-s install:artists install:genres install:bands install:tracks install:tracks install:users install:favourites install:albums",
+    "postinstall": "run-s install:artists install:genres install:bands install:tracks install:tracks install:users install:favourites install:albums install:graphql",
     "install:artists": "cd artists && npm i",
     "install:genres": "cd genres && npm i",
     "install:bands": "cd bands && npm i",
@@ -12,6 +12,7 @@
     "install:users": "cd users && npm i",
     "install:favourites": "cd favourites && npm i",
     "install:albums": "cd albums && npm i",
+    "install:graphql": "cd graphql && npm i",
     "run:artists": "cd artists && npm run start:dev",
     "run:genres": "cd genres && npm run start:dev",
     "run:bands": "cd bands && npm run start:dev",
@@ -19,8 +20,9 @@
     "run:users": "cd users && npm run start:dev",
     "run:favourites": "cd favourites && npm run start:dev",
     "run:albums": "cd albums && npm run start:dev",
-    "run:all": "npm run kill && run-p run:artists run:genres run:bands run:tracks run:users run:favourites run:albums",
-    "kill": "kill-port --port 3001,3002,3003,3004,3005,3006,3007"
+    "run:graphql": "cd graphql && npm run start:dev",
+    "run:all": "npm run kill && run-p run:artists run:genres run:bands run:tracks run:users run:favourites run:albums run:graphql",
+    "kill": "kill-port --port 3001,3002,3003,3004,3005,3006,3007,8080"
   },
   "author": "",
   "license": "ISC",

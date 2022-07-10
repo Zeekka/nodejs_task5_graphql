@@ -59,6 +59,18 @@ RUN npm config set cache /tmp/npm_cache
 2) Билдишь образ контейнера `docker build --build-arg current_user=$(id -u) --build-arg current_user_group=$(id -g) -t task5:latest .`
 3) Запускаешь контейнер командой `docker run --network host -v $(pwd):/app -it task5 sh`
 # Если не используешь докер
-# Запуск MongoDB
+# Запуск MongoDB и остального
 1) Билдишь образ MongoDB контейнера `docker build -t task5_mongodb:latest --file ./docker/MongoDBDockerfile ./docker/`
-2) Запускаешь контейнер командой `docker run -d --network host task5_mongodb`
+2) Создать volume для записи данных локально `docker volume create mongodata`
+3) Запускаешь контейнера из корневой директории проекта командой `docker run -d --network host -v mongodata:/data/db task5_mongodb`
+4) Устанавливаешь зависимости `npm install`, они должны установиться для всех микросервисов
+5) Редактируешь .env.example файлы чтобы они соответствовали твоим настройкам
+6) Запускаешь всё разом `npm run run:all`
+7) GraphQL сервер живёт на `http://localhost:8080/graphql` (порт можно поменять)
+Note: Чтобы прокинуть токен в запрос к graphql apollo нужно добавить в секцию `HTTP HEADERS`:
+```
+
+{
+ "Authorization" : "Bearer <token>" 
+}
+```
